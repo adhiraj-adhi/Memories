@@ -1,0 +1,22 @@
+/*================== post form styling  =================*/
+
+.post_form form .post_form_heading{
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.post_form form input, .post_form form textarea{
+    width: 100%;
+    border: 1px solid var(--black-color);
+    outline: none;
+    margin-bottom: 0.8rem;
+    padding: 0.45rem 1rem;
+    border-radius: 7px;
+    resize: none;
+    background: transparent;
+}
+
+.post_form form input[type="submit"]{
+    cursor: pointer;
+}

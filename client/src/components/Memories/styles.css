@@ -1,0 +1,101 @@
+.memories_container{
+    width: 100%;
+    padding: 0 2rem;
+}
+
+.memories_container .memories_heading{
+    width: fit-content;
+    color: var(--black-color);
+    border-bottom: 1.5px solid var(--black-color);
+    margin-bottom: 2.25rem;
+}
+
+.memories_sort{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 0 2.5%;
+}
+
+.memories_sort .text_filter{
+    width: 25%;
+    border: 1px solid var(--black-color);
+    border-radius: 7px;
+    padding: 0.1rem 0.25rem;
+    display: flex;
+}
+
+.memories_sort .text_sort{
+    outline: none;
+    width: 80%;
+    border: none;
+    padding: 0.3rem 0.75rem;
+}
+
+.memories_sort .text_sort_btn{
+    outline: none;
+    border: none;
+    background: var(--black-color);
+    color: var(--white-color);
+    padding: 0.3rem 0.75rem;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0
+}
+
+.memories_sort .filters{
+    outline: none;
+    padding: 0.4rem 1rem;
+    width: 25%;
+    border-radius: 7px;
+    border: 1px solid var(--black-color);
+}
+
+.memories_sub_container{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    /*background: red;*/
+}
+
+.memories_sub_container .memories{
+    width: 30%;
+    margin-left: 2.5%;
+    /*background: white;*/
+}
+
+@media screen and (max-width: 800px){
+    .memories_sort{
+        padding: 0 7.5%;
+    }
+    .memories_sub_container .memories{
+        width: 40%;
+        margin-left: 7.75%;
+    }
+}
+@media screen and (max-width: 570px){
+    .memories_sort{
+        flex-direction: column;
+        align-items: center;
+        padding: 0;
+    }
+    .memories_sort .text_filter, .memories_sort .filters{
+        width: 80%;
+        margin-bottom: 1rem;
+    }
+    .memories_sub_container{
+        justify-content: center;
+    }
+    .memories_sub_container .memories{
+        width: 80%;
+        margin-left: 0;
+    }
+}
+@media screen and (max-width: 470px){
+    .memories_sort .text_filter, .memories_sort .filters{
+        width: 96.5%;
+    }
+    .memories_sub_container .memories{
+        width: 96.5%;
+    }
+}

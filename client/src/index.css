@@ -1,0 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=Source+Code+Pro:wght@400;500;600;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+    font-family: 'Hanken Grotesk', sans-serif;
+}
+
+:root {
+    --black-color: #111928;
+    --gray-color: #707273;
+    --white-color: #ffffff;
+    --white-color2: rgb(241, 241, 241);
+    --font-family: 'Source Code Pro', monospace;
+}
+
+body {
+    background-color: var(--white-color);
+}
+
+
+img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.active_modal {
+    overflow-y: hidden;
+}
+
+/*active_modal class simply prevents the scrolling if registration or sign in forms are opened*/

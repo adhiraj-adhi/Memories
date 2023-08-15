@@ -1,0 +1,68 @@
+.hero-container{
+    padding: 9rem 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.hero-container-heading{
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    /*border-bottom: 3px solid var(--black-color);*/
+}
+
+.hero-container-para{
+    color: var(--gray-color);
+    margin-bottom: 2rem;
+    font-family: 'Source Code Pro', monospace;
+}
+
+.popular_memories{
+    align-self: flex-start;
+}
+
+.popular_memories_heading{
+    width: fit-content;
+    color: var(--black-color);
+    border-bottom: 1.5px solid var(--black-color);
+    margin-bottom: 2.25rem;
+}
+.popular_memories_container{
+    display: flex;
+    justify-content: space-between;
+}
+
+.vertical_container{
+    width: 40%;
+    /*background-color: red;*/
+}
+
+.horizontal_container{
+    width: 52%;
+}
+
+@media screen and (max-width: 955px) {
+    .popular_memories_container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .vertical_container{
+        width: 60%;
+    }
+
+    .horizontal_container{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 675px) {
+    .vertical_container{
+        width: 100%;
+    }
+
+    .horizontal_container{
+        width: 100%;
+    }
+}

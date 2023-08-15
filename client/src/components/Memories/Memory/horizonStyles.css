@@ -1,0 +1,31 @@
+.horizon_memory_container{
+    flex-direction: row;
+}
+
+.horizon_memory_img{
+    width: 40%;
+    height: auto;
+    margin-right: 1rem;
+}
+
+.horizon_memory_details{
+    width: 50%;
+}
+
+@media screen and (max-width: 1100px) {
+    .horizon_memory_img{
+        width: 50%;
+    }
+}
+@media screen and (max-width: 955px) {
+    .horizon_memory_container{
+        flex-direction: column;
+        margin-bottom: 1.5rem;
+    }
+    .horizon_memory_img{
+        width: 100%;
+    }
+    .horizon_memory_details{
+        width: 100%;
+    }
+}

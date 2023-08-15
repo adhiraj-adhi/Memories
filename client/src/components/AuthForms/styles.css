@@ -1,0 +1,100 @@
+.userform_container {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0%;
+    top: 0%;
+    z-index: 1000;
+    background: rgba(49, 49, 49, 0.8);
+}
+
+.close_form {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+}
+
+.signInForm {
+    width: 30%;
+    min-height: 75%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 7px;
+    /*background: lightpink;*/
+    background: #fff2f4;
+}
+
+.signInForm form {
+    width: 100%;
+    padding: 2rem;
+    /*background-color: white;*/
+}
+
+.signInForm form p {
+    color: orangered;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}
+
+.signInForm form input {
+    outline: none;
+    border: 1px solid var(--black-color);
+    width: 100%;
+    padding: 0.5rem 1.25rem;
+    margin-bottom: 1.25rem;
+    border-radius: 7px;
+}
+
+.signInForm form input[type="submit"] {
+    width: 35%;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    background: var(--white-color);
+}
+
+.signInForm .register_router {
+    color: var(--black-color);
+    border-bottom: 1px solid var(--black-color);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+@media screen and (max-width: 1050px) {
+    .signInForm {
+        width: 42.5%;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .signInForm {
+        width: 55%;
+        min-height: 65%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .signInForm {
+        width: 65%;
+        min-height: 55%;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .signInForm form {
+        padding: 0.75rem;
+    }
+
+    .signInForm {
+        width: 80%;
+    }
+}
