@@ -16,7 +16,7 @@ const ProfileCompo = () => {
                         <p style={{fontSize: "0.96rem"}}> {user.name} </p>
                         <p style={{fontSize: "0.9rem"}}> {user.email} </p>
                         <p style={{fontSize: "0.9rem"}}> You have total of {userPost.length} memories </p>
-                        <p style={{fontSize: "0.9rem"}}> Total Like Counts on your memories : 100 </p>
+                        <p style={{fontSize: "0.9rem"}}> Total Like Counts on your memories : {userPost.reduce((total, current) => total = total + current.likes, 0)} </p>
                     </div>
                 </div>
                 <div className="post_form" id="post_form_id">
@@ -27,7 +27,6 @@ const ProfileCompo = () => {
             <div className="profile_memories memories_sub_container">
                 {
                     userPost.map(item => {
-                        // console.log("ITEM",item);
                         const {author, title, description,postImgPath, hashtags, likes} = item;
                         const imagePath = `http://localhost:3001/postsImg/${postImgPath}`
                         // const sliceddescription = description.length < 50 ? description : description.slice(0, 50) + "...";

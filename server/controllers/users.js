@@ -8,6 +8,8 @@
 
 import User from "../models/users.js"
 import Post from "../models/posts.js"
+import path from "path";
+import fs from "fs";
 
 
 export const createPost = async (req, res) => {
@@ -39,9 +41,9 @@ export const getUsersPosts = async (req, res) => {
         userPost.sort((a, b) => {
             return b.createdAt - a.createdAt;
         });
-        
-        const data =  userPost.map(post => {
-            return {   
+
+        const data = userPost.map(post => {
+            return {
                 id: post._id,
                 author: post.author,
                 title: post.title,
@@ -64,27 +66,43 @@ export const getAPost = async (req, res) => {
         res.status(200).json({
             id: post._id,
             author: post.author,
-            title : post.title,
+            title: post.title,
             description: post.description,
             hashtags: post.hashtags
         })
     } catch (error) {
-        res.status(404).json({err: error.message})
+        res.status(404).json({ err: error.message })
     }
 }
 
 export const editPost = async (req, res) => {
     try {
-        const updates = {
+        const post = await Post.findById({ _id: req.params.postId });
+        console.log("PPP",req.body);
+        let updates = {
+            ...post._doc,
             author : req.body.author,
             title : req.body.title,
             description: req.body.description,
             hashtags: req.body.hashtags
+        };
+        if (req.file) {
+            fs.unlink(`public/postsImg/${post.postImgPath}`, (err) => {
+                if (err) throw err;
+            })
+            updates = {
+                ...post._doc,
+                ...updates,
+                postImgPath: req.file.filename
+            }
         }
-        const result = await Post.findOneAndUpdate({_id: req.params.postId}, updates);
-        res.status(200).json({mssg: "updated"})
+        console.log("III?",updates);
+
+        const result = await Post.findOneAndUpdate({ _id: req.params.postId }, updates);
+        console.log("RRRREEEESS",result);
+        res.status(200).json({ mssg: "updated" })
     } catch (error) {
-        res.status(500).json({err: error.message})
+        res.status(500).json({ err: error.message })
     }
 }
 
@@ -92,26 +110,26 @@ export const deletePost = async (req, res) => {
     try {
         // console.log(req.userId._id); // o/p : { _id: new ObjectId("64d8b19be6df2ac8a2f6480a") }
         // console.log(req.userId._id); // O/p : new ObjectId("64d8b19be6df2ac8a2f6480a")
-        const user = await User.findById({ _id: req.userId._id }); 
+        const user = await User.findById({ _id: req.userId._id });
         console.log(user);
         const index = user.posts.indexOf(req.params.postId);
         const deletedDoc = await Post.findByIdAndDelete({ _id: req.params.postId });
         user.posts.splice(index, 1);
         await user.save();
-        
-        res.status(200).json({mssg :"Deleted"})
+
+        res.status(200).json({ mssg: "Deleted" })
     } catch (error) {
-        res.status(401).json({err: error.message})
+        res.status(401).json({ err: error.message })
     }
 }
 
 export const likePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId);
-        post.likes.includes(req.userId._id) ? post.likes.splice(post.likes.indexOf(req.userId._id) ,1) : post.likes.push(req.userId._id);
+        post.likes.includes(req.userId._id) ? post.likes.splice(post.likes.indexOf(req.userId._id), 1) : post.likes.push(req.userId._id);
         await post.save();
-        res.status(200).json({mssg: "like updated"})
+        res.status(200).json({ mssg: "like updated" })
     } catch (error) {
-        res.status(500).json({err: error.message})
+        res.status(500).json({ err: error.message })
     }
 }

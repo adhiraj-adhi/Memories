@@ -34,7 +34,7 @@ const upload = multer({ storage, fileFilter });
 router.post("/createPost", upload.single('image'), createPost);
 router.get("/getUserPost/", getUsersPosts);
 router.get("/getAPost/:postId", getAPost);
-router.patch("/editPost/:postId", editPost);
+router.patch("/editPost/:postId",upload.single('image'), editPost);
 router.delete("/deletePost/:postId", deletePost);
 router.patch("/likePost/:postId", likePost);
 

@@ -42,7 +42,7 @@ const PostForm = () => {
         formData.append('hashtags', postData.hashtags);
         formData.append('image', postData.image);
         console.log("image: ",postData.image);
-        console.log("FormData: ",formData);
+        // console.log("FormData: ",formData);
         try {
             if (!updatePostData) {
                 const response = await axiosInstance.post("/user/createPost", formData, { headers: { 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem("memories")).token } })
@@ -50,8 +50,16 @@ const PostForm = () => {
                 navigate("/")
             }
             if (updatePostData) {
-                // const response = await axiosInstance.patch(`/user/editPost/${updatePostData.id}`, postData, { headers: { 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem("memories")).token } })
-                const response = await axiosInstance.patch(`/user/editPost/${updatePostData.id}`, formData, { headers: { 'Authorization': `Bearer ${user.token}`}})
+                console.log(postData);
+                try {
+                    if(!allowImgUpdate){
+                        const response = await axiosInstance.patch(`/user/editPost/${updatePostData.id}`, postData, { headers: { 'Authorization': 'Bearer ' + JSON.parse(localStorage.getItem("memories")).token } })
+                    } else {
+                        const response = await axiosInstance.patch(`/user/editPost/${updatePostData.id}`, formData, { headers: { 'Authorization': `Bearer ${user.token}`}})
+                    }
+                } catch (error) {
+                    console.log(error);
+                }
                 dispatch(setUpdatePostData(""));
                 navigate("/")
             }
@@ -92,7 +100,7 @@ const PostForm = () => {
                 value={postData.hashtags}
                 onChange={collectData}
             /> <br />
-            {updatePostData && <p onClick={setAllowImgUpdate(true)}> Click to edit image </p>}
+            {updatePostData && <p onClick={() => setAllowImgUpdate(!allowImgUpdate)}> {allowImgUpdate ? "Continue without image update" : "Click to edit image"} </p>}
             {updatePostData ? (allowImgUpdate && <input type="file" accept=".png, .jpg, .jpeg" name="image" onChange={handleImage} required />) : <input type="file" accept=".png, .jpg, .jpeg" name="image" onChange={handleImage} required />}
              <br/>
             {updatePostData ? <input type="submit" value="Update" /> : <input type="submit" value="Create" />}

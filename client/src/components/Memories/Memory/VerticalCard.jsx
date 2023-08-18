@@ -25,6 +25,7 @@ const VerticalCard = (props) => {
     const deletePost = async (id) => {
         if (window.confirm("Do you want to delete this post?")) {
             const response = await axiosInstance.delete(`/user/deletePost/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
+            dispatch(setUserPost(userPost.filter(post => !post.id === id)))
             console.log(response);
         } else {
             console.log("Cancelled");
