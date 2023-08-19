@@ -50,7 +50,8 @@ export const getUsersPosts = async (req, res) => {
                 description: post.description,
                 hashtags: post.hashtags,
                 postImgPath: post.postImgPath,
-                likes: post.likes.length
+                likes: post.likes.length,
+                createdAt: post.createdAt,
             }
         })
         // console.log(userPost);
@@ -78,7 +79,6 @@ export const getAPost = async (req, res) => {
 export const editPost = async (req, res) => {
     try {
         const post = await Post.findById({ _id: req.params.postId });
-        console.log("PPP",req.body);
         let updates = {
             ...post._doc,
             author : req.body.author,
@@ -96,7 +96,6 @@ export const editPost = async (req, res) => {
                 postImgPath: req.file.filename
             }
         }
-        console.log("III?",updates);
 
         const result = await Post.findOneAndUpdate({ _id: req.params.postId }, updates);
         console.log("RRRREEEESS",result);
@@ -116,6 +115,10 @@ export const deletePost = async (req, res) => {
         const deletedDoc = await Post.findByIdAndDelete({ _id: req.params.postId });
         user.posts.splice(index, 1);
         await user.save();
+
+        fs.unlink(`public/postsImg/${deletedDoc.postImgPath}`, (err) => {
+            if (err) throw err;
+        })
 
         res.status(200).json({ mssg: "Deleted" })
     } catch (error) {

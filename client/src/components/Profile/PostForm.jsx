@@ -11,20 +11,19 @@ const PostForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [allowImgUpdate, setAllowImgUpdate] = useState(false);
-    const [postData, setPostData] =
-        useState(updatePostData !== "" ? {
-            author: updatePostData.author,
-            title: updatePostData.title,
-            description: updatePostData.description,
-            hashtags: updatePostData.hashtags,
-            image: ""
-        } : {
-            author: "",
-            title: "",
-            description: "",
-            hashtags: "",
-            image: ""
-        });
+    const [postData, setPostData] = useState(updatePostData ?  {
+        author: updatePostData.author,
+        title: updatePostData.title,
+        description: updatePostData.description,
+        hashtags: updatePostData.hashtags,
+        image: ""
+    } : {
+        author: "",
+        title: "",
+        description: "",
+        hashtags: "",
+        image: ""
+    })
 
     function collectData(e) {
         setPostData({ ...postData, [e.target.name]: e.target.value });
@@ -100,7 +99,7 @@ const PostForm = () => {
                 value={postData.hashtags}
                 onChange={collectData}
             /> <br />
-            {updatePostData && <p onClick={() => setAllowImgUpdate(!allowImgUpdate)}> {allowImgUpdate ? "Continue without image update" : "Click to edit image"} </p>}
+            {updatePostData && <p onClick={() => setAllowImgUpdate(!allowImgUpdate)} className="allowImgUpdate"> {allowImgUpdate ? "Continue without image update" : "Click to edit image"} </p>}
             {updatePostData ? (allowImgUpdate && <input type="file" accept=".png, .jpg, .jpeg" name="image" onChange={handleImage} required />) : <input type="file" accept=".png, .jpg, .jpeg" name="image" onChange={handleImage} required />}
              <br/>
             {updatePostData ? <input type="submit" value="Update" /> : <input type="submit" value="Create" />}

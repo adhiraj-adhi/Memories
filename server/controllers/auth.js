@@ -119,7 +119,8 @@ export const getAllPost = async (req, res) => {
                 description: post.description,
                 hashtags: post.hashtags,
                 postImgPath: post.postImgPath,
-                likes: post.likes.length
+                likes: post.likes.length,
+                createdAt: post.createdAt
             }
         })
         res.status(200).json(data)

@@ -18,14 +18,18 @@ const VerticalCard = (props) => {
     const dispatch = useDispatch();
 
     const getAPost = async (id) => {
-        const response = await axiosInstance.get(`/user/getAPost/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
-        dispatch(setUpdatePostData(response.data));
+        try {
+            const response = await axiosInstance.get(`/user/getAPost/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
+            dispatch(setUpdatePostData(response.data));
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     const deletePost = async (id) => {
         if (window.confirm("Do you want to delete this post?")) {
             const response = await axiosInstance.delete(`/user/deletePost/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
-            dispatch(setUserPost(userPost.filter(post => !post.id === id)))
+            dispatch(setUserPost(userPost.filter(post => post.id !== id)))
             console.log(response);
         } else {
             console.log("Cancelled");
@@ -45,7 +49,40 @@ const VerticalCard = (props) => {
         }
     }
 
-    console.log("XCDD", props.image);
+
+    const date1 = new Date();
+    const date2 = new Date(props.createdAt)
+    console.log(date2);
+    const diffTime = ((Math.abs(date1.getTime() - date2.getTime())));
+    const diffTimeSeconds = parseInt(diffTime / 1000);
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+    console.log(diffTimeSeconds);
+    console.log(diffDays + " days");
+    let postCreationTime;
+    if (diffDays < 1 && (diffTimeSeconds / (86400)) < 24) {     // 60* 60 * 24 = 86400 and 60* 24 = 1440
+        if (diffTimeSeconds < 60) {
+            postCreationTime = diffTimeSeconds + " seconds ago";
+        } else if (diffTimeSeconds > 60 && diffTimeSeconds < 3600) {
+            postCreationTime = Math.floor(((diffTimeSeconds / 3600) * 60)) + " minutes ago"
+        } else {
+            postCreationTime = Math.floor((diffTimeSeconds / (86400) * 24)) + " hours ago"
+        }
+    } else {
+        if (diffDays === 1) {
+            postCreationTime = diffDays + " day ago"
+        } else if (diffDays > 1 && diffDays < 365) {
+            postCreationTime = diffDays + " days ago"
+        } else {
+            if (diffDays >= 365 && diffDays < 730) {
+                postCreationTime = diffDays + " year ago"
+            } else {
+                postCreationTime = diffDays / 365 + " years ago"
+            }
+        }
+    }
+
+
+
 
     return (
         <div className="memory_container">
@@ -53,7 +90,7 @@ const VerticalCard = (props) => {
                 <img src={props.src} alt="img" />
             </div>
             <div className="memory_details">
-                <p className="memory_author"> <span> {props.author} </span> <RxDotFilled /> <span>2 years ago</span> </p>
+                <p className="memory_author"> <span> {props.author} </span> <RxDotFilled /> <span>{postCreationTime}</span> </p>
                 <h4 className="memory_title"> {props.title} </h4>
                 <p className="about_memory"> {props.description} </p>
                 <p className="memory_hashtags">{props.hashtags}</p>
@@ -64,7 +101,7 @@ const VerticalCard = (props) => {
                     </div>
                     {
                         props.enableFunctinality && <div className="delete_And_customize">
-                            <p className="edit_btn" onClick={() => getAPost(props.id)}> <a href="#post_form_id" ><FaEdit /></a> </p>
+                            <p className="edit_btn" onClick={() => getAPost(props.id)}> <a href="#post_form_id"><FaEdit /></a> </p>
                             <p className="delete_btn" onClick={() => deletePost(props.id)}> <AiFillDelete /> </p>
                         </div>
                     }
