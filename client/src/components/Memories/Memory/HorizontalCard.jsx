@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import axiosInstance from "../../../axiosSetup";
 import { setViewForm, setPosts } from "../../../reducers/reducerSlice";
 import { RxDotFilled } from "react-icons/rx";
@@ -12,12 +14,15 @@ const HorizontalCard = (props) => {
     const viewForm = useSelector(state => state.reducerSlice.viewForm);
     const user = useSelector(state => state.reducerSlice.user);
     const posts = useSelector(state => state.reducerSlice.posts);
+    const [likeToggle, setLikeToggle] = useState(props.hasUserLiked);
 
     const dispatch = useDispatch();
 
     const likesBtn = async (id) => {
         try {
-            dispatch(setPosts(posts.map(post => post.id === id ? { ...post, likes: post.likes === 0 ? post.likes + 1 : post.likes - 1 } : post)))
+            dispatch(setPosts(posts.map(post => post.id === id ? { ...post,  likes: likeToggle? post.likes-1 : post.likes+1 } : post)))
+            // dispatch(setUserPost(userPost.map(post => post.id === id ? { ...post, likes: likeToggle? post.likes-1 : post.likes+1 } : post)))
+            setLikeToggle(!likeToggle);
             const response = await axiosInstance.patch(`/user/likePost/${id}`, {}, { headers: { 'Authorization': `Bearer ${user.token}` } });
             console.log(response.data);
         } catch (error) {
@@ -64,7 +69,7 @@ const HorizontalCard = (props) => {
             </div>
             <div className="memory_details horizon_memory_details">
                 <p className="memory_author"> <span>{props.author}</span> <RxDotFilled /> <span>{postCreationTime}</span> </p>
-                <h4 className="memory_title"> {props.title} </h4>
+                <h4 className="memory_title"> <Link to={`post/${props.id}`}> {props.title} </Link> </h4>
                 <p className="about_memory"> {props.description} </p>
                 <p className="memory_hashtags">{props.hashtag}</p>
                 <div className="memory_btn">
@@ -72,10 +77,6 @@ const HorizontalCard = (props) => {
                         <p className="like_btn" onClick={() => { user === null ? dispatch(setViewForm(!viewForm)) : likesBtn(props.id) }}> <AiFillLike /> ({props.likes}) </p>
                         {/* <p className="share_btn"> <FaShare /> </p> */}
                     </div>
-                    {/*<div className="delete_And_customize">*/}
-                    {/*    <p className="edit_btn"> <FaEdit /> </p>*/}
-                    {/*    <p className="delete_btn"> <AiFillDelete /> </p>*/}
-                    {/*</div>*/}
                 </div>
             </div>
         </div>

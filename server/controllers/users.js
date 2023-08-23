@@ -36,7 +36,7 @@ export const getUsersPosts = async (req, res) => {
         const user = await User.findById(req.userId);
         const userPost = await Promise.all(user.posts.map(id => Post.findById(id.toString())
         ));
-        console.log(userPost);
+        // console.log(userPost);
 
         userPost.sort((a, b) => {
             return b.createdAt - a.createdAt;
@@ -51,6 +51,7 @@ export const getUsersPosts = async (req, res) => {
                 hashtags: post.hashtags,
                 postImgPath: post.postImgPath,
                 likes: post.likes.length,
+                hasUserLiked: post.likes.includes(req.userId._id),
                 createdAt: post.createdAt,
             }
         })
@@ -69,7 +70,8 @@ export const getAPost = async (req, res) => {
             author: post.author,
             title: post.title,
             description: post.description,
-            hashtags: post.hashtags
+            hashtags: post.hashtags,
+            likes: post.likes.length
         })
     } catch (error) {
         res.status(404).json({ err: error.message })
@@ -129,6 +131,7 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
     try {
         const post = await Post.findById(req.params.postId);
+        console.log(post);
         post.likes.includes(req.userId._id) ? post.likes.splice(post.likes.indexOf(req.userId._id), 1) : post.likes.push(req.userId._id);
         await post.save();
         res.status(200).json({ mssg: "like updated" })

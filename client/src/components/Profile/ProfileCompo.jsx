@@ -27,13 +27,13 @@ const ProfileCompo = () => {
             <div className="profile_memories memories_sub_container">
                 {
                     userPost.map(item => {
-                        const {author, title, description,postImgPath, hashtags, likes, createdAt} = item;
+                        const {author, title, description,postImgPath, hashtags, likes, hasUserLiked, createdAt} = item;
                         const imagePath = `http://localhost:3001/postsImg/${postImgPath}`
                         // const sliceddescription = description.length < 50 ? description : description.slice(0, 50) + "...";
                         const sliceddescription = description.slice(0, 50) + "...";
                         return (
                             <div className="memories" key={item.id}>
-                                <VerticalCard id={item.id} author={author} title={title} description={sliceddescription} hashtags={hashtags} likes={likes} enableFunctinality={true} src={imagePath} createdAt={createdAt} />
+                                <VerticalCard id={item.id} author={author} title={title} description={sliceddescription} hashtags={hashtags} likes={likes} enableFunctinality={true} src={imagePath} createdAt={createdAt} hasUserLiked={hasUserLiked} />
                             </div>      
                         )
                     })

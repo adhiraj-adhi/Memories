@@ -4,10 +4,12 @@ import { RxDotFilled } from "react-icons/rx";
 import { AiFillLike, AiFillDelete } from "react-icons/ai";
 import { FaShare, FaEdit } from "react-icons/fa";
 
-import { setPosts, setUpdatePostData, setUserPost, setViewForm } from "../../../reducers/reducerSlice";
+import { getSpecificPost, setPosts, setSpecificPost, setUpdatePostData, setUserPost, setViewForm } from "../../../reducers/reducerSlice";
 import axiosInstance from "../../../axiosSetup";
 import "./styles.css"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const VerticalCard = (props) => {
     // const navigate = useNavigate();
@@ -15,12 +17,15 @@ const VerticalCard = (props) => {
     const user = useSelector(state => state.reducerSlice.user);
     const posts = useSelector(state => state.reducerSlice.posts);
     const userPost = useSelector(state => state.reducerSlice.userPost);
+    const [likeToggle, setLikeToggle] = useState(props.hasUserLiked);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const getAPost = async (id) => {
         try {
             const response = await axiosInstance.get(`/user/getAPost/${id}`, { headers: { 'Authorization': `Bearer ${user.token}` } })
             dispatch(setUpdatePostData(response.data));
+            dispatch(setSpecificPost(response.data))
         } catch (error) {
             console.log(error);
         }
@@ -37,11 +42,23 @@ const VerticalCard = (props) => {
     }
 
 
+    // function likesToggleHandler() {
+    //     if(likeToggle){
+    //         setLikeToggle(!likeToggle)
+    //         return -1
+    //     }
+    //     // } else {
+    //         setLikeToggle(!likeToggle)
+    //         return 1
+    //     // }
+    // }
+
     const likesBtn = async (id) => {
         console.log(id);
         try {
-            dispatch(setPosts(posts.map(post => post.id === id ? { ...post, likes: post.likes === 0 ? post.likes + 1 : post.likes - 1 } : post)))
-            dispatch(setUserPost(userPost.map(post => post.id === id ? { ...post, likes: post.likes === 0 ? post.likes + 1 : post.likes - 1 } : post)))
+            dispatch(setPosts(posts.map(post => post.id === id ? { ...post,  likes: likeToggle? post.likes-1 : post.likes+1 } : post)))
+            dispatch(setUserPost(userPost.map(post => post.id === id ? { ...post, likes: likeToggle? post.likes-1 : post.likes+1 } : post)))
+            setLikeToggle(!likeToggle);
             const response = await axiosInstance.patch(`/user/likePost/${id}`, {}, { headers: { 'Authorization': `Bearer ${user.token}` } });
             console.log(response.data);
         } catch (error) {
@@ -52,12 +69,12 @@ const VerticalCard = (props) => {
 
     const date1 = new Date();
     const date2 = new Date(props.createdAt)
-    console.log(date2);
+    // console.log(date2);
     const diffTime = ((Math.abs(date1.getTime() - date2.getTime())));
     const diffTimeSeconds = parseInt(diffTime / 1000);
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-    console.log(diffTimeSeconds);
-    console.log(diffDays + " days");
+    // console.log(diffTimeSeconds);
+    // console.log(diffDays + " days");
     let postCreationTime;
     if (diffDays < 1 && (diffTimeSeconds / (86400)) < 24) {     // 60* 60 * 24 = 86400 and 60* 24 = 1440
         if (diffTimeSeconds < 60) {
@@ -91,7 +108,8 @@ const VerticalCard = (props) => {
             </div>
             <div className="memory_details">
                 <p className="memory_author"> <span> {props.author} </span> <RxDotFilled /> <span>{postCreationTime}</span> </p>
-                <h4 className="memory_title"> {props.title} </h4>
+                <h4 className="memory_title"> <Link to={`/post/${props.id}`} onClick={() => dispatch(getSpecificPost(props.id))}> {props.title} </Link> </h4>
+                {/* <h4 className="memory_title" onClick={() => {navigate(`/${props.id}`); dispatch(getSpecificPost(props.id))}}> {props.title} </h4> */}
                 <p className="about_memory"> {props.description} </p>
                 <p className="memory_hashtags">{props.hashtags}</p>
                 <div className="memory_btn">

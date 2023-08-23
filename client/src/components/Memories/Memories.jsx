@@ -20,13 +20,13 @@ const Memories = (props) => {
             <div className="memories_sub_container">
                 {
                     props.posts.map(post => {
-                        const { id, author, title, description, hashtags, likes, postImgPath, createdAt } = post;
+                        const { id, author, title, description, hashtags, likes, postImgPath, hasUserLiked, createdAt } = post;
                         // const sliceddescription = description.length < 50 ? description : description.slice(0, 50) + "...";
                         const sliceddescription = description.slice(0, 50) + "...";
                         // console.log(data);
                         return (
                             <div className="memories" key={id}>
-                                <VerticalCard id={id} author={author} title={title} description={sliceddescription} hashtags={hashtags} likes={likes} src={`http://localhost:3001/postsImg/${postImgPath}`} createdAt={createdAt} />
+                                <VerticalCard id={id} author={author} title={title} description={sliceddescription} hashtags={hashtags} likes={likes} src={`http://localhost:3001/postsImg/${postImgPath}`} createdAt={createdAt} hasUserLiked={hasUserLiked} />
                             </div>
                         )
                     })

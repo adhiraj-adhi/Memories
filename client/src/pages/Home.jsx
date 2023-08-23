@@ -1,42 +1,32 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setPosts } from '../reducers/reducerSlice';
+import { getAllPosts, setPosts } from '../reducers/reducerSlice';
 import axiosInstance from '../axiosSetup';
-import Form from '../components/AuthForms/Form';
+// import Form from '../components/AuthForms/Form';
 import Hero from "../components/Hero/Hero";
 import Memories from '../components/Memories/Memories';
+import Footer from '../components/Footer/Footer';
 
 const Home = () => {
-  const viewForm = useSelector(state => state.reducerSlice.viewForm);
+  const user = useSelector(state => state.reducerSlice.user);
+  const isLoading = useSelector(state => state.reducerSlice.isLoading);
   const posts = useSelector(state => state.reducerSlice.posts);
   const dispatch = useDispatch();
 
-  const fetchPost = async () => {
-    try {
-      const response = await axiosInstance.get("/");
-      dispatch(setPosts(response.data));
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
-    fetchPost();
+    dispatch(getAllPosts(user));
   }, [])
 
-  if(posts.length !== 0){
-    console.log(posts);
+  if(isLoading){
+    return <h3> Loading ...</h3>
   }
 
   return (
     <>
-      {viewForm && <Form />}
-      {
-        posts.length > 0 && <Hero data1={posts[posts.length - 1]} data2={posts[posts.length - 2]} data3={posts[posts.length - 3]} />
-      }
-      {
-        posts.length > 0 && <Memories posts={posts} />
-      }
+      {/* {viewForm && <Form />} */}
+      <Hero data1={posts[posts.length - 1]} data2={posts[posts.length - 2]} data3={posts[posts.length - 3]} />
+      <Memories posts={posts} />
+      <Footer />
     </>
   )
 }
